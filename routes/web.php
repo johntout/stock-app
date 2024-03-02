@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\StockPriceDataController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/update-stock-prices', function () {
-    \App\Jobs\UpdateStockPrices::dispatchSync();
-});
-
-Route::get('/stock-prices', StockPriceDataController::class)->name('stock-price-data');
+Route::get('/stocks', StockController::class)->name('stocks');
 
 Route::view('/', 'welcome');
 

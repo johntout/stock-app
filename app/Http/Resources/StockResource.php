@@ -25,20 +25,20 @@ class StockResource extends JsonResource
             'price_data' => [
                 'current' => $this->when($latestTimeSeries, [
                     'timestamp' => $latestTimeSeries?->timestamp,
-                    'open' => $latestTimeSeries?->open,
-                    'high' => $latestTimeSeries?->high,
-                    'low' => $latestTimeSeries?->low,
-                    'close' => $latestTimeSeries?->close,
+                    'open' => $latestTimeSeries?->cache?->open,
+                    'high' => $latestTimeSeries?->cache?->high,
+                    'low' => $latestTimeSeries?->cache?->low,
+                    'close' => $latestTimeSeries?->cache?->close,
                 ], null),
                 'previous' => $this->when($previousTimeSeries, [
                     'timestamp' => $previousTimeSeries?->timestamp,
-                    'open' => $previousTimeSeries?->open,
-                    'high' => $previousTimeSeries?->high,
-                    'low' => $previousTimeSeries?->low,
-                    'close' => $previousTimeSeries?->close,
-                ], null)
+                    'open' => $previousTimeSeries?->cache?->open,
+                    'high' => $previousTimeSeries?->cache?->high,
+                    'low' => $previousTimeSeries?->cache?->low,
+                    'close' => $previousTimeSeries?->cache?->close,
+                ], null),
             ],
-            'percentage_data' => $this->percentageData($latestTimeSeries, $previousTimeSeries)
+            'percentage_data' => $this->percentageData($latestTimeSeries, $previousTimeSeries),
         ];
     }
 

@@ -10,7 +10,7 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Stock extends Model
 {
-    use HandlesFormObjects, HasFactory, HasEagerLimit;
+    use HandlesFormObjects, HasEagerLimit, HasFactory;
 
     protected $fillable = [
         'title',

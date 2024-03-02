@@ -22,6 +22,16 @@ beforeEach(function () {
 });
 
 test('update stock prices handle method with successful call', function () {
+    Cache::shouldReceive('forget')
+        ->with('stock-prices')
+        ->once();
+
+    Cache::shouldReceive('get')
+        ->with('stocks-timeseries', []);
+
+    Cache::shouldReceive('put')
+        ->withSomeOfArgs('stocks-timeseries', 60);
+
     Http::fake([
         $this->apiUrl.'/*' => Http::sequence()
             ->push([

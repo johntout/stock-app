@@ -25,7 +25,7 @@ class StockPercentageService
 
         $this->percentageData = [
             'percentage' => $percentage,
-            'direction' => $percentage < 0 ? 'down' : 'up'
+            'direction' => $percentage < 0 ? 'down' : 'up',
         ];
 
         return $this;

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -53,7 +54,7 @@ class UpdateStockPrices implements ShouldQueue
                     foreach ($alphaVantageResponse->getTimestamps() as $timestamp) {
                         $timestampData = $alphaVantageResponse->getTimestampData($timestamp);
 
-                        StockTimeSeries::query()->updateOrCreate(
+                        $stockTimeSeries = StockTimeSeries::query()->updateOrCreate(
                             [
                                 'stock_id' => $stock->id,
                                 'timestamp' => $timestamp,
@@ -66,8 +67,12 @@ class UpdateStockPrices implements ShouldQueue
                                 'volume' => $timestampData['volume'],
                             ]
                         );
+
+                        $stockTimeSeries->refreshCache();
                     }
                 }
             });
+
+        Cache::forget('stock-prices');
     }
 }
