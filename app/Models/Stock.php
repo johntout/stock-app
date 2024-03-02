@@ -27,7 +27,7 @@ class Stock extends Model
     public function percentageData(): Attribute
     {
         return Attribute::make(
-            get: function() {
+            get: function () {
                 $latestTimeSeries = $this->timeSeries->get(0);
                 $previousTimeSeries = $this->timeSeries->get(1);
 

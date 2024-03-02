@@ -26,13 +26,13 @@ class StockPercentageService
 
         if ($percentage < 0) {
             $direction = 'down';
-        } else if ($percentage > 0) {
+        } elseif ($percentage > 0) {
             $direction = 'up';
         }
 
         $this->percentageData = [
             'percentage' => $percentage,
-            'direction' => $direction
+            'direction' => $direction,
         ];
 
         return $this;

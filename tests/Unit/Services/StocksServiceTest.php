@@ -12,4 +12,3 @@ test('get stocks', function () {
     expect($stocksService->getStocks()->count())
         ->toBe(Stock::query()->paginate(20)->count());
 });
-
