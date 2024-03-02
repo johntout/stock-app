@@ -20,7 +20,7 @@ beforeEach(function () {
     $this->ibmStock = Stock::query()->firstWhere(['symbol' => 'IBM']);
     $this->microsoftStock = Stock::query()->firstWhere(['symbol' => 'MSFT']);
 
-    StockTimeSeries::factory()->create([
+    $this->existingImbStockTimeSeries = StockTimeSeries::factory()->create([
         'stock_id' => $this->ibmStock->id,
         'timestamp' => '2024-02-29 18:55:00',
         'open' => 112,
@@ -35,6 +35,13 @@ test('update stock prices handle method with successful call', function () {
                     '2. Symbol' => 'IBM',
                 ],
                 'Time Series ('.config('alpha-vantage-api.interval').')' => [
+                    '2024-02-29 18:55:00' => [
+                        '1. open' => '285.3000',
+                        '2. high' => '185.3000',
+                        '3. low' => '185.0000',
+                        '4. close' => '185.2000',
+                        '5. volume' => '32',
+                    ],
                     '2024-02-29 19:55:00' => [
                         '1. open' => '185.3000',
                         '2. high' => '185.3000',
@@ -120,15 +127,17 @@ test('update stock prices handle method with successful call', function () {
         'volume' => '42',
     ]);
 
-    $microsoftFirstTimeSeries = $this->microsoftStock->timeSeries()->orderByDesc('timestamp')->first();
-    $imbFirstTimeSeries = $this->ibmStock->timeSeries()->orderByDesc('timestamp')->first();
+    $microsoftCurrentTimeSeries = $this->microsoftStock->timeSeries()->orderByDesc('timestamp')->first();
+    $imbFirstCurrentSeries = $this->ibmStock->timeSeries()->orderByDesc('timestamp')->first();
 
     expect($this->ibmStock->timeSeries()->count())->toBe(3)
         ->and($this->microsoftStock->timeSeries()->count())->toBe(2)
-        ->and($microsoftFirstTimeSeries->cache)->not->toBeEmpty()
-        ->and($imbFirstTimeSeries->cache)->not->toBeEmpty()
-        ->and($imbFirstTimeSeries->cache->open)->toBe(185.3)
-        ->and($imbFirstTimeSeries->cache->close)->toBe(185.2000);
+        ->and($microsoftCurrentTimeSeries->cache)->not->toBeEmpty()
+        ->and($imbFirstCurrentSeries->cache)->not->toBeEmpty()
+        ->and($imbFirstCurrentSeries->cache->open)->toBe(185.3)
+        ->and($imbFirstCurrentSeries->cache->close)->toBe(185.2000)
+        ->and($this->existingImbStockTimeSeries->cache->open)->toBe(285.3000)
+        ->and($this->existingImbStockTimeSeries->cache->open)->not->toBe(112);
 });
 
 test('update stock prices handle method with unsuccessful call', function () {

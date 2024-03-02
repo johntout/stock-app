@@ -34,7 +34,6 @@ class StockTimeSeries extends Model
                 $cachedTimeSeries = Arr::get($cachedStocksTimeSeries, $this->id);
 
                 if (empty($cachedTimeSeries)) {
-                    return null;
                     $cachedTimeSeries = $this;
                     Arr::set($cachedStocksTimeSeries, $this->id, $cachedTimeSeries);
                     Cache::put('stocks-timeseries', $cachedStocksTimeSeries, 60);
