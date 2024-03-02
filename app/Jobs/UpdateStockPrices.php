@@ -44,7 +44,7 @@ class UpdateStockPrices implements ShouldQueue
                         $alphaVantageResponse = new AlphaVantageResponseDto($data->json());
                     } catch (\Throwable $e) {
                         // TODO:: send error to reporting tool
-                        Log::error($e->getMessage());
+                        Log::error('Error while creating AlphaVantageResponseDto: '.$e->getMessage());
 
                         continue;
                     }
