@@ -5,6 +5,7 @@ namespace Tests\Feature\Jobs;
 use App\Exceptions\AlphaVantageApiException;
 use App\Jobs\UpdateStockPrices;
 use App\Models\Stock;
+use App\Models\StockTimeSeries;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -19,19 +20,15 @@ beforeEach(function () {
 
     $this->ibmStock = Stock::query()->firstWhere(['symbol' => 'IBM']);
     $this->microsoftStock = Stock::query()->firstWhere(['symbol' => 'MSFT']);
+
+    StockTimeSeries::factory()->create([
+        'stock_id' => $this->ibmStock->id,
+        'timestamp' => '2024-02-29 18:55:00',
+        'open' => 112
+    ]);
 });
 
 test('update stock prices handle method with successful call', function () {
-    Cache::shouldReceive('forget')
-        ->with('stock-prices')
-        ->once();
-
-    Cache::shouldReceive('get')
-        ->with('stocks-timeseries', []);
-
-    Cache::shouldReceive('put')
-        ->withSomeOfArgs('stocks-timeseries', 60);
-
     Http::fake([
         $this->apiUrl.'/*' => Http::sequence()
             ->push([
@@ -124,8 +121,15 @@ test('update stock prices handle method with successful call', function () {
         'volume' => '42',
     ]);
 
-    expect($this->ibmStock->timeSeries()->count())->toBe(2)
-        ->and($this->microsoftStock->timeSeries()->count())->toBe(2);
+    $microsoftFirstTimeSeries = $this->microsoftStock->timeSeries()->orderByDesc('timestamp')->first();
+    $imbFirstTimeSeries = $this->ibmStock->timeSeries()->orderByDesc('timestamp')->first();
+
+    expect($this->ibmStock->timeSeries()->count())->toBe(3)
+        ->and($this->microsoftStock->timeSeries()->count())->toBe(2)
+        ->and($microsoftFirstTimeSeries->cache)->not->toBeEmpty()
+        ->and($imbFirstTimeSeries->cache)->not->toBeEmpty()
+        ->and($imbFirstTimeSeries->cache->open)->toBe(185.3)
+        ->and($imbFirstTimeSeries->cache->close)->toBe(185.2000);
 });
 
 test('update stock prices handle method with unsuccessful call', function () {
@@ -138,6 +142,6 @@ test('update stock prices handle method with unsuccessful call', function () {
 
     Http::assertSentCount(0);
 
-    expect($this->ibmStock->timeSeries()->count())->toBe(0)
+    expect($this->ibmStock->timeSeries()->count())->toBe(1)
         ->and($this->microsoftStock->timeSeries()->count())->toBe(0);
 });
