@@ -2,4 +2,10 @@
 chmod +x /etc/cron.d/crontab
 crontab /etc/cron.d/crontab
 
+cd ../sites
+su stock
+composer install
+npm install && npm run build
+php artisan migrate --force
+
 service supervisor start
