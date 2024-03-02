@@ -18,7 +18,7 @@ class StockFactory extends Factory
     {
         return [
             'title' => fake()->text(5),
-            'symbol' => fake()->text(5),
+            'symbol' => fake()->unique()->text(5),
         ];
     }
 }

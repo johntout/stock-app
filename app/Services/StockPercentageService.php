@@ -21,11 +21,18 @@ class StockPercentageService
 
     private function calculatePercentageData(): static
     {
+        $direction = null;
         $percentage = ($this->latestTimeSeries->close - $this->previousTimeSeries->close) * 100 / $this->previousTimeSeries->close;
+
+        if ($percentage < 0) {
+            $direction = 'down';
+        } else if ($percentage > 0) {
+            $direction = 'up';
+        }
 
         $this->percentageData = [
             'percentage' => $percentage,
-            'direction' => $percentage < 0 ? 'down' : 'up',
+            'direction' => $direction
         ];
 
         return $this;

@@ -38,18 +38,7 @@ class StockResource extends JsonResource
                     'close' => $previousTimeSeries?->cache?->close,
                 ], null),
             ],
-            'percentage_data' => $this->percentageData($latestTimeSeries, $previousTimeSeries),
+            'percentage_data' => $this->percentage_data,
         ];
-    }
-
-    private function percentageData($latestTimeSeries, $previousTimeSeries): ?array
-    {
-        if (! $latestTimeSeries || ! $previousTimeSeries) {
-            return null;
-        }
-
-        $stockPercentage = new StockPercentageService($latestTimeSeries, $previousTimeSeries);
-
-        return $stockPercentage->getPercentageData();
     }
 }

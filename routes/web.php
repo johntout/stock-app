@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::view('/', 'welcome');
 
 Route::get('/stocks', StockController::class)->name('stocks');
 
-Route::view('/', 'welcome');
+Route::view('/stocks-table', 'stocks-table');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
