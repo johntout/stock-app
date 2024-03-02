@@ -20,6 +20,10 @@ class AlphaVantageApiService
      */
     public function __construct(array $config)
     {
+        if (empty($config['api_key'])) {
+            throw new \Exception(message: 'Alpha Vantage api key is not defined!');
+        }
+
         $this->url = $config['url'];
         $this->params = [
             'function' => $config['function'],

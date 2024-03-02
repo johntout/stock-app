@@ -1,0 +1,49 @@
+﻿version: '3.3'
+
+services:
+  nginx-stock-app:
+    container_name: stock-app-nginx
+    restart: always
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ../:/var/www/sites
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl.cert:/etc/nginx/ssl.cert
+    links:
+      - php-stock-app
+    networks:
+      - stock-app
+
+  redis-stock-app:
+    container_name: stock-app-redis
+    image: redis:latest
+    restart: unless-stopped
+    depends_on:
+      - nginx-stock-app
+    networks:
+      - stock-app
+
+  php-stock-app:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        user: stock
+        uid: 1337
+    image: php-app
+    container_name: stock-app-php
+    restart: unless-stopped
+    volumes:
+      - ../:/var/www/sites
+      - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    networks:
+      - stock-app
+
+networks:
+    stock-app:
+      driver: bridge

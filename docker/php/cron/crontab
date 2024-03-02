@@ -1,0 +1,3 @@
+MAILTO=""
+SHELL="/bin/sh"
+* * * * * stock cd /var/www/sites && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1
