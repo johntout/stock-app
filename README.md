@@ -59,6 +59,8 @@ If you want to attach to the container run the following command:
 
 `docker exec -it stock-app-php bash`
 
+`cd ../sites`
+
 ### Finally
 
 Go to your applications url and you will the Laravel welcome page. 
