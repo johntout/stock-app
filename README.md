@@ -19,9 +19,11 @@ If you use some local development tool like Laravel Herd or Laravel Valet you ca
 
 `npm install && npm run build`
 
+`php artisan key:generate`
+
 `php artisan migrate`
 
-When runnning `php artisan migrate` you will be asked if you want to create an sqlite database. Select `Yes` in order to create it.
+When running `php artisan migrate` you will be asked if you want to create an sqlite database. Select `Yes` in order to create it.
 
 In the `.env` file you created, you have to change the variables `APP_URL` to match your application url and the `REDIS_HOST` to `127.0.0.1`, as they are already predefined for use with docker. 
 
