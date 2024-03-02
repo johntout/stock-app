@@ -69,7 +69,11 @@ There are two endpoints.
 
 No authentication is implemented for these two endpoints because the project is for demo purposes only.
 
-You can run tests using `./vendor/bin/pest`
+In the `.env` file you created, you have to provide `STOCK_API_KEY` in order for the stock prices to be updated. You can obtain an API key from https://www.alphavantage.co
+
+
+## TESTS
+`./vendor/bin/pest`
 
 ## Some thoughts behind the application structure
 
