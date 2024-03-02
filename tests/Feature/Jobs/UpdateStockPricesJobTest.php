@@ -6,7 +6,6 @@ use App\Exceptions\AlphaVantageApiException;
 use App\Jobs\UpdateStockPrices;
 use App\Models\Stock;
 use App\Models\StockTimeSeries;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -24,7 +23,7 @@ beforeEach(function () {
     StockTimeSeries::factory()->create([
         'stock_id' => $this->ibmStock->id,
         'timestamp' => '2024-02-29 18:55:00',
-        'open' => 112
+        'open' => 112,
     ]);
 });
 
