@@ -47,7 +47,7 @@ If you are a fan of docker, after cloning the repo you can run the commands belo
 
 Migrations will be forced, Laravel Horizon and Laravel Scheduler will start automatically with supervisor.
 
-After all containers are up, you will see the messages that all processes are up.
+After all containers are up, you will see the messages below that indicate that all processes are up.
 
 `stock-app-php    | 2024-03-02 22:13:05,914 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)`
 
