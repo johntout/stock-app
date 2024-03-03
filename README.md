@@ -80,7 +80,7 @@ If you want to manually run the stock update console command  and not rely on th
 
 The main goal was to integrate with the Alpha Vantage API. For that purpose `AlphaVantageApiServiceProvider` was created along with `AlphaVantageApiService` class and the `AlphaVantageApi` facade, in order to be the starting point for the api communication.
 
-The communication between the app and the Alpha Vantage API is initiated through the `GetStockPricesFromAlphaVantageApi` console command which dispatches the `UpdateStockPrices` job in order for the update to happen in the background.
+The communication between the app and the Alpha Vantage API is initiated through the `GetStockPricesFromAlphaVantageApi` console command which dispatches, every minute, the `UpdateStockPrices` job in order for the update to happen in the background.
 
 The  `UpdateStockPrices` job fetches the predefined stocks from the database using Laravel's query builder. We use query builder in order to chunk the results and then the `AlphaVantageApiService` communicates with Alpha Vantage API with the Laravel's `Htpp` facade. But in order to be more efficient we create concurrent requests by using the `pool` method of the `Htpp` facade
 
