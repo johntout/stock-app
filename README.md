@@ -69,10 +69,9 @@ There are two endpoints.
 
 No authentication is implemented for these two endpoints because the project is for demo purposes only.
 
-If you want to manually run the stock update console command  and not rely on the Laravel Scheduler, you can run `php artisan app:get-stock-prices-from-alpha-vantage-api`
-
 In the `.env` file you created, you have to provide `STOCK_API_KEY` in order for the stock prices to be updated. You can obtain an API key from https://www.alphavantage.co
 
+If you want to manually run the stock update console command  and not rely on the Laravel Scheduler, you can run `php artisan app:get-stock-prices-from-alpha-vantage-api`
 
 ## TESTS
 `./vendor/bin/pest`
